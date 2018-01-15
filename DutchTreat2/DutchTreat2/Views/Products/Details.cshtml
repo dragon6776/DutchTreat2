@@ -1,0 +1,84 @@
+@model DutchTreat2.Data.Entities.Product
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Product</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Category)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Size)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Size)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ArtDescription)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ArtDescription)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ArtDating)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ArtDating)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ArtId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ArtId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Artist)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Artist)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ArtistBirthDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ArtistBirthDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ArtistDeathDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ArtistDeathDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ArtistNationality)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ArtistNationality)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,106 @@
+@model DutchTreat2.Data.Entities.Product
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form asp-action="Edit">
+    <div class="form-horizontal">
+        <h4>Product</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <label asp-for="Category" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Category" class="form-control" />
+                <span asp-validation-for="Category" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Size" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Size" class="form-control" />
+                <span asp-validation-for="Size" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Price" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Title" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ArtDescription" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ArtDescription" class="form-control" />
+                <span asp-validation-for="ArtDescription" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ArtDating" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ArtDating" class="form-control" />
+                <span asp-validation-for="ArtDating" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ArtId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ArtId" class="form-control" />
+                <span asp-validation-for="ArtId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Artist" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Artist" class="form-control" />
+                <span asp-validation-for="Artist" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ArtistBirthDate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ArtistBirthDate" class="form-control" />
+                <span asp-validation-for="ArtistBirthDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ArtistDeathDate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ArtistDeathDate" class="form-control" />
+                <span asp-validation-for="ArtistDeathDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ArtistNationality" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ArtistNationality" class="form-control" />
+                <span asp-validation-for="ArtistNationality" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

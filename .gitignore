@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/DutchTreat2/.vs
+/DutchTreat2/DutchTreat2/bin/Debug/netcoreapp1.1
+/DutchTreat2/DutchTreat2/obj
