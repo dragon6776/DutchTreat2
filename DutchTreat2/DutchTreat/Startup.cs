@@ -35,6 +35,7 @@ namespace DutchTreat
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<DutchTreatSeeder>();
 
             services.AddMvc();
         }
@@ -63,6 +64,16 @@ namespace DutchTreat
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            if (env.IsDevelopment())
+            {
+                // seed the database
+                using(var scope = app.ApplicationServices.CreateScope())
+                {
+                    var seeder = scope.ServiceProvider.GetService<DutchTreatSeeder>();
+                    seeder.Seed();
+                }
+            }
         }
     }
 }

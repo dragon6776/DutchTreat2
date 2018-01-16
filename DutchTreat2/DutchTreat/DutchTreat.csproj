@@ -5,13 +5,6 @@
     <UserSecretsId>aspnet-DutchTreat-71B8E27E-ACE0-4FA2-9CBA-20BBB3D970F1</UserSecretsId>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Data\Entities\**" />
-    <Content Remove="Data\Entities\**" />
-    <EmbeddedResource Remove="Data\Entities\**" />
-    <None Remove="Data\Entities\**" />
-  </ItemGroup>
-
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
