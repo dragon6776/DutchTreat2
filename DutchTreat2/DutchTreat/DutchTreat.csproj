@@ -3,7 +3,12 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <UserSecretsId>aspnet-DutchTreat-71B8E27E-ACE0-4FA2-9CBA-20BBB3D970F1</UserSecretsId>
+    <TypeScriptToolsVersion>2.5</TypeScriptToolsVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="ClientApp\tsconfig.app.json" />
+  </ItemGroup>
 
 
   <ItemGroup>
