@@ -11,6 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using DutchTreat.Data;
 using DutchTreat.Models;
 using DutchTreat.Services;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using AutoMapper;
 
 namespace DutchTreat
 {
@@ -26,12 +29,26 @@ namespace DutchTreat
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication()
+                .AddCookie()
+                .AddJwtBearer(cfg =>
+                {
+                    cfg.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                    {
+                        ValidIssuer= Configuration["Tokens:Issuer"],
+                        ValidAudience = Configuration["Tokens:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"]))
+                    };
+                });
+
             services.AddDbContext<DutchTreatDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DutchTreatConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<DutchTreatDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddAutoMapper();
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();

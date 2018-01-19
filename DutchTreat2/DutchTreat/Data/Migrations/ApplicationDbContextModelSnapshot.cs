@@ -29,7 +29,11 @@ namespace DutchTreat.Data.Migrations
 
                     b.Property<string>("OrderNumber");
 
+                    b.Property<string>("UserId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -245,6 +249,13 @@ namespace DutchTreat.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("DutchTreat.Data.Entities.Order", b =>
+                {
+                    b.HasOne("DutchTreat.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("DutchTreat.Data.Entities.OrderItem", b =>

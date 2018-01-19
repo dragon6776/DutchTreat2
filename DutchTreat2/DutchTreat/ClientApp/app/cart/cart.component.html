@@ -1,0 +1,28 @@
+﻿<div class="well well-sm">
+    <h3>Shopping Cart</h3>
+    <div *ngIf="!dataService.order.items.length">No items</div>
+    <div *ngIf="dataService.order.items.length > 0">
+        <div>#/Items: {{ dataService.order.items.length }}</div>
+        <div>Subtotal: {{ dataService.order.subtotal }}</div>
+        <table class="table table-condensed table-hover">
+            <thead>
+                <tr>
+                    <td>Product</td>
+                    <td>#</td>
+                    <td>$</td>
+                    <td>Total</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let o of dataService.order.items">
+                    <td>{{o.productCategory}}</td>
+                    <td>{{o.quantity}}</td>
+                    <td>{{o.unitPrice | currency: "USD":true}}</td>
+                    <td>{{o.unitPrice * o.quantity | currency: "USD":true}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button (click)="onCheckout()" class="btn btn-primary" *ngIf="dataService.order.items.length>0">Checkout</button>
+</div>

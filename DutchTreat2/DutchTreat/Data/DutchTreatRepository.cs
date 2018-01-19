@@ -17,12 +17,15 @@ namespace DutchTreat.Data
             _ctx = ctx;
         }
 
-        public IEnumerable<Order> GetAllOrders()
+        public IEnumerable<Order> GetAllOrders(bool includeItems)
         {
-            return _ctx.Orders
-                .Include(i => i.Items)
-                .ThenInclude(i=>i.Product)
-                .ToList();
+            if (!includeItems)
+                return _ctx.Orders.ToList();
+            else
+                return _ctx.Orders
+                    .Include(i => i.Items)
+                    .ThenInclude(i=>i.Product)
+                    .ToList();
         }
 
         public Order GetOrderById(int id)
@@ -55,6 +58,25 @@ namespace DutchTreat.Data
         public void AddEntity(object model)
         {
             _ctx.Add(model);
+        }
+
+        public IEnumerable<Order> GetAllOrdersByUser(string username, bool includeItems)
+        {
+            var query = _ctx.Orders
+                .Include(i => i.User)
+                .Where(x => x.User.UserName == username);
+
+            if (!includeItems)
+            {
+                return query.ToList();
+            }
+            else
+            {
+                return query
+                    .Include(i => i.Items)
+                    .ThenInclude(i => i.Product)
+                    .ToList();
+            }
         }
     }
 }

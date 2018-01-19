@@ -13,6 +13,9 @@ using Microsoft.Extensions.Options;
 using DutchTreat.Models;
 using DutchTreat.Models.AccountViewModels;
 using DutchTreat.Services;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace DutchTreat.Controllers
 {
@@ -24,17 +27,19 @@ namespace DutchTreat.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly IConfiguration _config;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger, IConfiguration config)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _config = config;
         }
 
         [TempData]
@@ -460,5 +465,61 @@ namespace DutchTreat.Controllers
         }
 
         #endregion
+
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> CreateToken([FromBody] LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByNameAsync(model.Email);
+
+                if (user != null)
+                {
+                    var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
+                    if (result.Succeeded)
+                    {
+                        // create the token
+                        var claims = new[]
+                        {
+                            new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                            new Claim(JwtRegisteredClaimNames.UniqueName, user.Email)
+                        };
+
+
+                        var key = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
+                        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+                        var token = new JwtSecurityToken(
+                            _config["Tokens:Issuer"],
+                            _config["Tokens:Audience"],
+                            claims,
+                            expires: DateTime.Now.AddMinutes(30),
+                            signingCredentials: creds);
+
+                        var results = new
+                        {
+                            token = new JwtSecurityTokenHandler().WriteToken(token),
+                            expiration = token.ValidTo
+                        };
+
+                        return Created("", results);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Password", "Wrong password.");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("Email", "Email is not existed.");
+                }
+
+            }
+
+            return BadRequest(ModelState);
+        }
     }
 }

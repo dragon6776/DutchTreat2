@@ -1,5 +1,6 @@
 ﻿import { Component, OnInit } from "@angular/core";
 import { DataService } from "../shared/dataService";
+import { Product } from "../shared/product";
 
 
 @Component({
@@ -21,6 +22,10 @@ export class ProductList implements OnInit {
                 this.products = this.dataService.products;
             }
         });
+    }
+
+    addProduct(product: Product) {
+        this.dataService.AddToOrder(product);
     }
 
 }
