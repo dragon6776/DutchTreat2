@@ -15,9 +15,6 @@ export class CheckoutComponent {
     errorMessage: string = "";
 
     onCheckout() {
-        // TODO
-        //alert("Doing checkout");
-
         this.dataService.checkout()
             .subscribe(s => {
                 if (s) {

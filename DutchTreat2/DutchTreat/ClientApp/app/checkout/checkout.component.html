@@ -2,7 +2,7 @@
     <div *ngIf="errorMessage" class="alert alert-warning">{{ errorMessage }}</div>
   <h3>Confirm Order</h3>
   <table class="table table-bordered table-hover">
-    <tr *ngFor="let o of data.order.items">
+    <tr *ngFor="let o of dataService.order.items">
       <td><img src="/img/{{ o.productArtId }}.jpg" alt="o.productTitle" class="img-thumbnail checkout-thumb" /></td>
       <td>{{ o.productCategory }}({{ o.productSize }}) - {{ o.productArtist }}: {{ o.productTitle }}</td>
       <td>{{ o.quantity }}</td>
@@ -14,7 +14,7 @@
     <table class="table table-condensed">
       <tr>
         <td class="text-right">Subtotal</td>
-        <td class="text-right">{{ data.order.subtotal|currency:'USD':true }}</td>
+        <td class="text-right">{{ dataService.subtotal|currency:'USD':true }}</td>
       </tr>
       <tr>
         <td class="text-right">Shipping</td>
@@ -22,7 +22,7 @@
       </tr>
       <tr>
         <td class="text-right">Total:</td>
-        <td class="text-right">{{ data.order.subtotal|currency:'USD':true }}</td>
+        <td class="text-right">{{ dataService.subtotal|currency:'USD':true }}</td>
       </tr>
     </table>
     <button class="btn btn-success" (click)="onCheckout()">Complete Purchase</button>

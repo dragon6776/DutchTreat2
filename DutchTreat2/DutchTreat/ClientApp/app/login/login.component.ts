@@ -24,8 +24,6 @@ export class LoginComponent implements OnInit {
 
     onLogin() {
         // call the login service
-        //alert(this.creds.username);
-        debugger;
         this.dataService.login(this.creds)
             .subscribe(success => {
                 if (this.dataService.order.items.length == 0) {

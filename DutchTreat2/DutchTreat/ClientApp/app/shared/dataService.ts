@@ -1,14 +1,12 @@
-﻿import { HttpClient } from "@angular/common/http"
+﻿import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import { Order, OrderItem } from "./order";
 import { Product } from "./product";
+import { SessionStorageService } from "./sessionStorageService";
 
 @Injectable()
 export class DataService {
-
-    constructor(private http: HttpClient) {
-    }
 
     private token: string = "";
     private tokenExpiration: Date;
@@ -16,6 +14,18 @@ export class DataService {
     public order: Order = new Order();
 
     public products: Product[] = [];
+
+    constructor(private http: HttpClient, private storageService: SessionStorageService) {
+        // get from storage
+        var lgStorage = this.storageService.getStorage();
+        if (lgStorage) {
+            this.token = lgStorage.token;
+            this.tokenExpiration = lgStorage.tokenExpiration;
+            this.order.items = lgStorage.orderItems;
+        }
+    }
+
+    
 
     public get loginRequired(): boolean {
         return this.token.length == 0 || this.tokenExpiration > new Date();
@@ -25,16 +35,27 @@ export class DataService {
         return this.http.post('/account/createtoken', creds)
             .map(response => {
                 //let tokenInfo = response.json();
-                debugger;
+                //debugger;
                 let tokenInfo = response as any;
                 this.token = tokenInfo.token;
                 this.tokenExpiration = tokenInfo.expiration;
+
+                // set to storage
+                this.storageService.setStorageLogin(this.token, this.tokenExpiration);
+                
                 return true;
             });
     }
 
     public checkout() {
-        return this.http.post('/api/orders', this.order)
+        if (!this.order.orderNumber) {
+            var d = this.order.orderDate;
+            this.order.orderNumber = d.getFullYear().toString() + d.getTime().toString();
+        }
+
+        return this.http.post("/api/orders", this.order, {
+            headers: new HttpHeaders({ "Authorization": "Bearer " + this.token })
+        })
             .map(res => {
                 this.order = new Order();
                 return true;
@@ -67,6 +88,7 @@ export class DataService {
             item.quantity = 1;
             this.order.items.push(item);
         }
-
+        // update to storage
+        this.storageService.setOrderItemsStorage(this.order.items);
     }
 }

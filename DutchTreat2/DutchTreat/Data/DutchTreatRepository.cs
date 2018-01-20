@@ -78,5 +78,16 @@ namespace DutchTreat.Data
                     .ToList();
             }
         }
+
+        public void AddOrder(Order order)
+        {
+            // convert new products to lookup of product
+            foreach(var item in order.Items)
+            {
+                item.Product = _ctx.Products.Find(item.Product.Id);
+            }
+
+            AddEntity(order);
+        }
     }
 }

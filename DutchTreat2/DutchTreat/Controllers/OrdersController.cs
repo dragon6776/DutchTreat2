@@ -74,7 +74,7 @@ namespace DutchTreat.Controllers
                     if(newOrder.OrderDate == DateTime.MinValue)
                         newOrder.OrderDate = DateTime.Now;
 
-                    _repo.AddEntity(newOrder);
+                    _repo.AddOrder(newOrder);
 
                     if (_repo.SaveAll())
                     {

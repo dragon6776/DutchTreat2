@@ -11,6 +11,7 @@ import { ShopComponent } from './shop/shop.component';
 import { ProductList } from './productList/productList.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { LoginComponent } from './login/login.component';
+import { SessionStorageService } from './shared/sessionStorageService';
 
 let routes = [
     { path: "", component: ShopComponent},
@@ -37,7 +38,8 @@ let routes = [
       })
   ],
   providers: [
-      DataService
+      DataService,
+      SessionStorageService
   ],
   bootstrap: [AppComponent]
 })
