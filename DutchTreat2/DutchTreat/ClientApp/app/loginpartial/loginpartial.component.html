@@ -1,0 +1,7 @@
+﻿<br />
+<div class="well clearfix">
+    <ul class="nav navbar-nav" *ngIf="dataService.loginRequired">
+        <li><a routerLink="login">Log in</a></li>
+    </ul>
+    <div class="" *ngIf="!dataService.loginRequired"><label>Hello {{ dataService.userName }}</label> | <button (click)="logout()">Logout</button></div>
+</div>

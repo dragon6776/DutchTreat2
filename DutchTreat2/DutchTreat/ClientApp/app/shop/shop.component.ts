@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'the-shop',
+  selector: 'the-shop', // auto generate
   templateUrl: 'shop.component.html',
   styles: []
 })

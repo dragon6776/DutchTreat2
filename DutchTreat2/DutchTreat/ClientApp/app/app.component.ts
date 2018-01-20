@@ -1,10 +1,15 @@
 import { Component } from '@angular/core';
+declare var $: any;
 
 @Component({
-  selector: 'the-shop',
-  templateUrl: "./app.component.html",
-  styles: []
+    selector: 'app-root',
+    templateUrl: "./app.component.html",
+    styles: []
 })
 export class AppComponent {
-  title = 'Dutch Treat';
+    title = 'Dutch Treat';
+
+    ngOnInit() {
+
+    }
 }

@@ -24,5 +24,6 @@
         </table>
     </div>
 
-    <button (click)="onCheckout()" class="btn btn-primary" *ngIf="dataService.order.items.length>0">Checkout</button>
+    <!--<button (click)="onCheckout()" class="btn btn-primary" *ngIf="dataService.order.items.length>0">Checkout</button>-->
+    <a routerLink="checkout" class="btn btn-primary" *ngIf="dataService.order.items.length>0">Checkout</a>
 </div>

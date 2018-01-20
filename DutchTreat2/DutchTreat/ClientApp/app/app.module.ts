@@ -12,6 +12,7 @@ import { ProductList } from './productList/productList.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { LoginComponent } from './login/login.component';
 import { SessionStorageService } from './shared/sessionStorageService';
+import { LoginpartialComponent } from './loginpartial/loginpartial.component';
 
 let routes = [
     { path: "", component: ShopComponent},
@@ -26,7 +27,8 @@ let routes = [
       CartComponent,
       ShopComponent,
       CheckoutComponent,
-      LoginComponent
+      LoginComponent,
+      LoginpartialComponent
   ],
   imports: [
       BrowserModule,

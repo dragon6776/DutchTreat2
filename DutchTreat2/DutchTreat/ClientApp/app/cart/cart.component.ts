@@ -14,13 +14,14 @@ export class CartComponent implements OnInit {
   ngOnInit() {
   }
 
-  onCheckout() {
-      if (this.dataService.loginRequired) {
-          // force login
-          this.router.navigate(['login']);
-      } else {
-          // go to checkout
-          this.router.navigate(['checkout']);
-      }
-  }
+    // move these to checkout.component.ts
+  //onCheckout() {
+  //    if (this.dataService.loginRequired) {
+  //        // force login
+  //        this.router.navigate(['login']);
+  //    } else {
+  //        // go to checkout
+  //        this.router.navigate(['checkout']);
+  //    }
+  //}
 }

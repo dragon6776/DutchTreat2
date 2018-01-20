@@ -70,6 +70,13 @@ namespace DutchTreat.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+
+                    // Ensure that JWT logged too: create JWT Token for angular app login
+                    var user = await _userManager.FindByNameAsync(model.Email);
+                    var obj = GenerateTokenInfo(user, model);
+                    string output = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+                    TempData["JWTToken"] = output;
+
                     return RedirectToLocal(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -245,6 +252,7 @@ namespace DutchTreat.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+        
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -252,6 +260,18 @@ namespace DutchTreat.Controllers
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
+
+            // update logoff tokenInfo to tempdata
+            var obj = new
+            {
+                token = "",
+                tokenExpiration = "",
+                userName = "",
+                email = "",
+            };
+            string output = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+            TempData["JWTToken"] = output;
+
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
@@ -467,45 +487,28 @@ namespace DutchTreat.Controllers
         #endregion
 
 
+        /// <summary>
+        /// JWT Login from API - // Ensure that cookie auth logged too
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> CreateToken([FromBody] LoginViewModel model)
         {
+            // Neu API goi thi co dang nhap duoc ben cookie hay ko???
+
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByNameAsync(model.Email);
 
                 if (user != null)
                 {
+                    // Ensure that cookie logged too
                     var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
                     if (result.Succeeded)
                     {
-                        // create the token
-                        var claims = new[]
-                        {
-                            new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-                            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                            new Claim(JwtRegisteredClaimNames.UniqueName, user.Email)
-                        };
-
-
-                        var key = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
-                        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-                        var token = new JwtSecurityToken(
-                            _config["Tokens:Issuer"],
-                            _config["Tokens:Audience"],
-                            claims,
-                            expires: DateTime.Now.AddMinutes(30),
-                            signingCredentials: creds);
-
-                        var results = new
-                        {
-                            token = new JwtSecurityTokenHandler().WriteToken(token),
-                            expiration = token.ValidTo,
-                            userName = user.UserName,
-                            email = user.Email,
-                        };
+                        var results = GenerateTokenInfo(user, model);
 
                         return Created("", results);
                     }
@@ -522,6 +525,40 @@ namespace DutchTreat.Controllers
             }
 
             return BadRequest(ModelState);
+        }
+
+        private object GenerateTokenInfo(ApplicationUser user, LoginViewModel model)
+        {
+            // luon dam bao cookie & jwt login dong thoi
+            // create the token
+            var claims = new[]
+            {
+                            new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                            new Claim(JwtRegisteredClaimNames.UniqueName, user.Email)
+                        };
+
+
+            var key = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                _config["Tokens:Issuer"],
+                _config["Tokens:Audience"],
+                claims,
+                expires: DateTime.Now.AddMinutes(30),
+                signingCredentials: creds);
+
+
+            var results = new
+            {
+                token = new JwtSecurityTokenHandler().WriteToken(token),
+                tokenExpiration = token.ValidTo,
+                userName = user.UserName,
+                email = user.Email,
+            };
+
+            return results;
         }
     }
 }

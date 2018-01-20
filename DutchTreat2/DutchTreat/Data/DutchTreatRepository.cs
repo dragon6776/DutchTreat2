@@ -36,11 +36,21 @@ namespace DutchTreat.Data
                 .FirstOrDefault(x => x.Id == id);
         }
 
-        public IEnumerable<Product> GetAllProducts()
+        public IEnumerable<Product> GetAllProducts(int? amountToTake)
         {
-            return _ctx.Products
-                .OrderBy(o => o.Title)
-                .ToList();
+            var query = _ctx.Products;
+
+            if (amountToTake > 0)
+            {
+                return query
+                    .Take(amountToTake.Value)
+                    .ToList();
+            }
+            else
+            {
+                return query
+               .ToList();
+            }
         }
 
         public IEnumerable<Product> GetProductsByCategory(string category)

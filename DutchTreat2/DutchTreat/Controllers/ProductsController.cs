@@ -18,11 +18,11 @@ namespace DutchTreat.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get(int? amountToTake)
         {
             try
             {
-                return Ok(_dutchRepository.GetAllProducts());
+                return Ok(_dutchRepository.GetAllProducts(amountToTake));
             }
             catch (Exception ex)
             {

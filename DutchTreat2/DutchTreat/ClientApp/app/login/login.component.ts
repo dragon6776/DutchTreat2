@@ -8,10 +8,13 @@ import { DataService } from '../shared/dataService';
     styles: []
 })
 export class LoginComponent implements OnInit {
-
+    title: string = "Login";
     constructor(private dataService: DataService, private router: Router) { }
 
     ngOnInit() {
+        if (!this.dataService.loginRequired) {
+            this.router.navigate(['/']);
+        }
     }
 
     errorMessage: string = "";
@@ -28,8 +31,10 @@ export class LoginComponent implements OnInit {
             .subscribe(success => {
                 if (this.dataService.order.items.length == 0) {
                     this.router.navigate(["/"]);
+                    // reload page for updating the header cookie logged info
+                    //location.reload();
                 } else {
-                    this.router.navigate(["checkout"]);
+                    this.router.navigate(["login"]);
                 }
             }, err => this.errorMessage = "Failed to login");
     }

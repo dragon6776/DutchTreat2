@@ -5,7 +5,7 @@ namespace DutchTreat.Data
 {
     public interface IDutchTreatRepository
     {
-        IEnumerable<Product> GetAllProducts();
+        IEnumerable<Product> GetAllProducts(int? amountToTake);
         IEnumerable<Product> GetProductsByCategory(string category);
         bool SaveAll();
         IEnumerable<Order> GetAllOrders(bool includeItems);

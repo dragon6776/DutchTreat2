@@ -6,14 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DutchTreat.Controllers
 {
-    public class AppController : Controller
+    public class AdminController : Controller
     {
         public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Shop()
         {
             return View();
         }

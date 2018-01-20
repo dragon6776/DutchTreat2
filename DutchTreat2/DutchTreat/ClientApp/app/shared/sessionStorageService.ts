@@ -13,13 +13,9 @@ export class SessionStorageService {
 
     public setOrderItemsStorage(orderItems: any[]): any {
         let storage = this.getStorage() as SessionStorage;
-        if (orderItems) {
-            storage.orderItems.length = 0;
-            storage.orderItems = orderItems;
-            this.setStorage(storage);
-        }
+        storage.orderItems = orderItems;
+        this.setStorage(storage);
     }
-
 
     public getStorage(): any {
         if (sessionStorage.getItem('dataStorage')) {
@@ -29,9 +25,13 @@ export class SessionStorageService {
     }
 
     public setStorageLogin(userName: string, token: string, tokenExpiration: Date):void {
-        var strg = this.getStorage();
+        var strg = this.getStorage() as SessionStorage;
         strg.userName = userName;
         strg.token = token;
         strg.tokenExpiration = tokenExpiration;
+    }
+
+    public clearStorageLogin(): void {
+        this.setStorageLogin('', '', null);
     }
 }
