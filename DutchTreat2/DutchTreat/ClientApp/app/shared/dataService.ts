@@ -8,6 +8,8 @@ import { SessionStorageService } from "./sessionStorageService";
 @Injectable()
 export class DataService {
 
+    private userName: string = "";
+    private email: string = "";
     private token: string = "";
     private tokenExpiration: Date;
 
@@ -17,11 +19,11 @@ export class DataService {
 
     constructor(private http: HttpClient, private storageService: SessionStorageService) {
         // get from storage
-        var lgStorage = this.storageService.getStorage();
-        if (lgStorage) {
-            this.token = lgStorage.token;
-            this.tokenExpiration = lgStorage.tokenExpiration;
-            this.order.items = lgStorage.orderItems;
+        var strg = this.storageService.getStorage();
+        if (strg != null) {
+            this.token = strg.token;
+            this.tokenExpiration = strg.tokenExpiration;
+            this.order.items = strg.orderItems;
         }
     }
 
@@ -35,13 +37,13 @@ export class DataService {
         return this.http.post('/account/createtoken', creds)
             .map(response => {
                 //let tokenInfo = response.json();
-                //debugger;
                 let tokenInfo = response as any;
                 this.token = tokenInfo.token;
                 this.tokenExpiration = tokenInfo.expiration;
-
+                this.userName = tokenInfo.userName;
+                this.email = tokenInfo.email;
                 // set to storage
-                this.storageService.setStorageLogin(this.token, this.tokenExpiration);
+                this.storageService.setStorageLogin(this.userName, this.token, this.tokenExpiration);
                 
                 return true;
             });

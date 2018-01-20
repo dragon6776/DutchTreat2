@@ -1,39 +1,37 @@
 ﻿import { Injectable } from "@angular/core";
+import { SessionStorage } from "./sessionStorage";
 
 
 @Injectable()
 export class SessionStorageService {
     constructor() { }
 
-    public setOrderItemsStorage(orderItems: any[]): any {
-        let storage = this.getStorage();
-
-        if (orderItems != null && typeof orderItems !== 'undefined') {
-            storage.orderItems.length = 0;
-            storage.orderItems = orderItems;
-            sessionStorage.setItem('loginStorage', JSON.stringify(storage));
-        }
-    }
-
     setStorage(data): any {
         let jsText = JSON.stringify(data);
-        sessionStorage.setItem('loginStorage', jsText);
+        sessionStorage.setItem('dataStorage', jsText);
     }
+
+    public setOrderItemsStorage(orderItems: any[]): any {
+        let storage = this.getStorage() as SessionStorage;
+        if (orderItems) {
+            storage.orderItems.length = 0;
+            storage.orderItems = orderItems;
+            this.setStorage(storage);
+        }
+    }
+
 
     public getStorage(): any {
-        if (sessionStorage.getItem('loginStorage')) {
-            return JSON.parse(sessionStorage.getItem('loginStorage'));
+        if (sessionStorage.getItem('dataStorage')) {
+            return JSON.parse(sessionStorage.getItem('dataStorage')) as SessionStorage;
         }
-
-        return null;
+        return new SessionStorage();
     }
 
-    public setStorageLogin(token, tokenExpiration):any {
-        var loginStorage: any = {
-            token: token,
-            tokenExpiration: tokenExpiration,
-        };
-
-        this.setStorage(loginStorage);
+    public setStorageLogin(userName: string, token: string, tokenExpiration: Date):void {
+        var strg = this.getStorage();
+        strg.userName = userName;
+        strg.token = token;
+        strg.tokenExpiration = tokenExpiration;
     }
 }

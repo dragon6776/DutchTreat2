@@ -502,7 +502,9 @@ namespace DutchTreat.Controllers
                         var results = new
                         {
                             token = new JwtSecurityTokenHandler().WriteToken(token),
-                            expiration = token.ValidTo
+                            expiration = token.ValidTo,
+                            userName = user.UserName,
+                            email = user.Email,
                         };
 
                         return Created("", results);
